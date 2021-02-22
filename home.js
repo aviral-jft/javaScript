@@ -10,6 +10,9 @@ function tableRowCount()
    //document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
 }
 function onFormSubmit(){
+   $("#exampleModal").click(function() { 
+    $("#exampleModal").modal("hide"); 
+  }); 
   var FormData=readFormData(); 
   if(selectedRow==null)
   insertNewRecord(FormData);
@@ -137,8 +140,8 @@ function fetchData(){
 fetchData()
 function tableRowCount2()
 {
-   x = document.getElementById("details").rows.length;
-   document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
+   var y = document.getElementById("details").rows.length;
+   document.getElementById("row_count").innerHTML="Total data count = "+(y-1);
 }
 function checkButton(clicked){
   console.log(clicked)
@@ -170,9 +173,10 @@ function validation()
   else
   {
   onFormSubmit()
-  $("#exampleModal").click(function() { 
-    $("#exampleModal").modal("hide"); 
-  }); 
+ 
   }
 }
-
+function email() {
+  var y = document.getElementById("email").pattern;
+  document.getElementById("demo").innerHTML = y;
+}

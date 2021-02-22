@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
       <link rel="stylesheet" href="home.css">
-      <script src="home2.js"></script>
+      <script src="home.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email address" required/>
+                    <input type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" class="form-control" id="email" placeholder="Enter your email address" required/>
                     <div class="email">
                     </div>
                 </div>
