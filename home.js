@@ -1,10 +1,13 @@
 var selectedRow=null;
 var forData;
 var x=1;
+var clicked;
+var row;
 function tableRowCount()
 {
    x = document.getElementById("details").rows.length;
    console.log(x)
+   //document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
 }
 function onFormSubmit(){
   var FormData=readFormData(); 
@@ -61,7 +64,7 @@ function insertNewRecord(data){
   cell4=newRow.insertCell(4);
   cell4.innerHTML=data.email;
   cell5=newRow.insertCell(5);
-  cell5.innerHTML="<button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal'>Edit</button> <button class='btn btn-danger' onClick='onDelete(this)'>Delete</button>";
+  cell5.innerHTML="<button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#edit'>Edit</button> <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)'>Delete</button>";
 }
 function resetForm(){
   document.getElementById("name").value="";
@@ -84,17 +87,17 @@ function updateRecord(FormData)
   selectedRow.cells[3].innerHTML=FormData.pno;
   selectedRow.cells[4].innerHTML=FormData.email;
 }
-function onDelete(td)
+function onDelete()
 {
-  if(confirm("Are you sure you want to delete this record?"))
-  
-  row=td.parentElement.parentElement;
+  //if(confirm("Are you sure you want to delete this record?"))
+  //row=td.parentElement.parentElement;
   console.log(row);
   document.getElementById("details").deleteRow(row.rowIndex)
 
   resetForm();
 }
 function fetchData(){
+    
     fetch("https://jsonplaceholder.typicode.com/users").then(
       res =>{
         res.json().then(
@@ -117,7 +120,7 @@ function fetchData(){
                 temp+="<td>"+local_data[i].username+"</td>";
                 temp+="<td>"+local_data[i].phone+"</td>";
                 temp+="<td>"+local_data[i].email+"</td>";
-                temp+="<td><button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal'>Edit</button> <button class='btn btn-danger' onClick='onDelete(this)'>Delete</button>";
+                temp+="<td><button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal'>Edit</button> <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)'>Delete</button>";
               }
               }
               x= data.length + 1;
@@ -132,3 +135,44 @@ function fetchData(){
     )
 }
 fetchData()
+function tableRowCount2()
+{
+   x = document.getElementById("details").rows.length;
+   document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
+}
+function checkButton(clicked){
+  console.log(clicked)
+  if(clicked=='submit')
+  onDelete()  
+}
+function onDelete2(td)
+{
+  //if(confirm("Are you sure you want to delete this record?"))
+  row=td.parentElement.parentElement;
+  console.log(row);
+}
+function validation()
+{
+  var FormData={};
+  FormData["id"]=x;
+  FormData["name"]=document.getElementById("name").value; 
+  FormData["uname"]=document.getElementById("uname").value; 
+  FormData["pno"]=document.getElementById("pno").value; 
+  FormData["email"]=document.getElementById("email").value; 
+  if(FormData["name"]=="")
+  document.getElementById("name").innerHTML="Enter your name"
+  else if(FormData["uname"]=="")
+  document.getElementById("username").innerHTML="Enter your name"
+  else if(FormData["pno"]=="")
+  document.getElementById("phonenumber").innerHTML="Enter your name"
+  else if(FormData["email"]=="")
+  document.getElementById("email").innerHTML="Enter your name"
+  else
+  {
+  onFormSubmit()
+  $("#exampleModal").click(function() { 
+    $("#exampleModal").modal("hide"); 
+  }); 
+  }
+}
+
