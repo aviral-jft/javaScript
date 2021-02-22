@@ -10,9 +10,9 @@ function tableRowCount()
    //document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
 }
 function onFormSubmit(){
-   $("#exampleModal").click(function() { 
-    $("#exampleModal").modal("hide"); 
-  }); 
+//    $("#exampleModal").click(function() { 
+//     $("#exampleModal").modal("hide"); 
+//   }); 
   var FormData=readFormData(); 
   if(selectedRow==null)
   insertNewRecord(FormData);
