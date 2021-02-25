@@ -10,9 +10,9 @@ function tableRowCount()
    //document.getElementById("row_count").innerHTML="Total data count = "+(x-1);
 }
 function onFormSubmit(){
-//    $("#exampleModal").click(function() { 
-//     $("#exampleModal").modal("hide"); 
-//   }); 
+  //  $("#exampleModal").click(function() { 
+  //   $("#exampleModal").modal("hide"); 
+  // });
   var FormData=readFormData(); 
   if(selectedRow==null)
   insertNewRecord(FormData);
@@ -67,7 +67,8 @@ function insertNewRecord(data){
   cell4=newRow.insertCell(4);
   cell4.innerHTML=data.email;
   cell5=newRow.insertCell(5);
-  cell5.innerHTML="<button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#edit'>Edit</button> <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)'>Delete</button>";
+  cell5.innerHTML="<button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal' data-keyboard='false' data-backdrop='static'>Edit</button>  <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)' data-keyboard='false' data-backdrop='static'>Delete</button>";
+  tableRowCount2()
 }
 function resetForm(){
   document.getElementById("name").value="";
@@ -77,11 +78,15 @@ function resetForm(){
     selectedRow=null;
 }
 function onEdit(td){
+  document.getElementById("exampleModalLabel").innerHTML="Edit details"
   selectedRow=td.parentElement.parentElement;
   document.getElementById("name").value=selectedRow.cells[1].innerHTML;
   document.getElementById("uname").value=selectedRow.cells[2].innerHTML;
   document.getElementById("pno").value=selectedRow.cells[3].innerHTML;
   document.getElementById("email").value=selectedRow.cells[4].innerHTML;
+  $("#exampleModal").on("hidden.bs.modal", function () {
+    resetForm()
+});
 }
 function updateRecord(FormData)
 {
@@ -89,14 +94,13 @@ function updateRecord(FormData)
   selectedRow.cells[2].innerHTML=FormData.uname;
   selectedRow.cells[3].innerHTML=FormData.pno;
   selectedRow.cells[4].innerHTML=FormData.email;
+  //resetForm();
 }
 function onDelete()
 {
-  //if(confirm("Are you sure you want to delete this record?"))
-  //row=td.parentElement.parentElement;
-  console.log(row);
+  console.log(row)
   document.getElementById("details").deleteRow(row.rowIndex)
-
+  tableRowCount2()
   resetForm();
 }
 function fetchData(){
@@ -118,12 +122,13 @@ function fetchData(){
               for(let i=0;i<data.length;i++)
               {
                 temp+="<tr>";
-                temp+="<td>"+local_data[i].id+"</td>";
-                temp+="<td>"+local_data[i].name+"</td>";
-                temp+="<td>"+local_data[i].username+"</td>";
-                temp+="<td>"+local_data[i].phone+"</td>";
-                temp+="<td>"+local_data[i].email+"</td>";
-                temp+="<td><button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal'>Edit</button> <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)'>Delete</button>";
+                temp+="<td class='col-md'>"+(i+1)+"</td>";
+                temp+="<td class='col-md' id='text'>"+local_data[i].name+"</td>";
+                temp+="<td class='col-md 'id='text'>"+local_data[i].username+"</td>";
+                temp+="<td class='col-md' id='text'>"+local_data[i].phone+"</td>";
+                temp+="<td class='col-md' id='text'>"+local_data[i].email+"</td>";
+                temp+="<td class='col-md'><button class='btn btn-warning' onClick='onEdit(this)' data-toggle='modal' data-target='#exampleModal' data-keyboard='false' data-backdrop='static'>Edit</button> <button class='btn btn-danger'  data-toggle='modal'  data-target='#delete' onClick='onDelete2(this)' data-keyboard='false' data-backdrop='static'>Delete</button>";
+                document.getElementById("row_count").innerHTML="Total data count = "+(i+1);
               }
               }
               x= data.length + 1;
@@ -142,17 +147,18 @@ function tableRowCount2()
 {
    var y = document.getElementById("details").rows.length;
    document.getElementById("row_count").innerHTML="Total data count = "+(y-1);
+   if((y-1)==0)
+    document.getElementById("record").innerHTML="<center>No Record!!</center>";
+  else
+    document.getElementById("record").innerHTML="";
 }
 function checkButton(clicked){
-  console.log(clicked)
   if(clicked=='submit')
   onDelete()  
 }
 function onDelete2(td)
 {
-  //if(confirm("Are you sure you want to delete this record?"))
   row=td.parentElement.parentElement;
-  console.log(row);
 }
 function validation()
 {
@@ -163,20 +169,44 @@ function validation()
   FormData["pno"]=document.getElementById("pno").value; 
   FormData["email"]=document.getElementById("email").value; 
   if(FormData["name"]=="")
-  document.getElementById("name").innerHTML="Enter your name"
+  $("#exampleModal").modal({"backdrop": "static"});
   else if(FormData["uname"]=="")
-  document.getElementById("username").innerHTML="Enter your name"
+  $("#exampleModal").modal({"backdrop": "static"});
   else if(FormData["pno"]=="")
-  document.getElementById("phonenumber").innerHTML="Enter your name"
+  $("#exampleModal").modal({"backdrop": "static"});
   else if(FormData["email"]=="")
-  document.getElementById("email").innerHTML="Enter your name"
+  $("#exampleModal").modal({"backdrop": "static"});
+  else if(FormData=="")
+  $("#exampleModal").modal({"backdrop": "static"});
   else
   {
-  onFormSubmit()
- 
+    onFormSubmit()
+    $('#exampleModal').click(function() {
+      $('#exampleModal').modal('hide');
+    }); 
   }
 }
 function email() {
   var y = document.getElementById("email").pattern;
   document.getElementById("demo").innerHTML = y;
 }
+function ModalLabel()
+{
+  resetForm();
+  document.getElementById("exampleModalLabel").innerHTML="Add details"
+}
+// function noerror()
+// {
+//   var name=document.getElementById("name").value; 
+//   // FormData["uname"]=document.getElementById("uname").value; 
+//   // FormData["pno"]=document.getElementById("pno").value; 
+//   // FormData["email"]=document.getElementById("email").value; 
+//   console.log(name)
+// }
+// function sno(){
+//   var y = document.getElementById("details").rows.length;
+//   //var y = document.getElementById("details").rows.length;
+//   //for(var i=0;i<y;i++)
+//   console.log(y)
+// }
+// sno()
